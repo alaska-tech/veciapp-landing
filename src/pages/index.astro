@@ -1,5 +1,8 @@
 ---
 import '../styles/main.css'
+import '../styles/animations.css'
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
 
 const heading = "VeciApp";
 const subheadingMobile = "VeciApp es una app social y comunitaria que conecta a migrantes venezolanos, colombianos retornados y comunidades receptoras en Santa Marta con oportunidades de venta y compra de bienes y servicios.";
@@ -46,13 +49,14 @@ const screenshots = [
 		<title>{pageTitle}</title>
 	</head>
 	<body>
+		<Navbar />
 		<div class="container">
 			<main>
 				<div class="text-container">
-					<img src={appIcon} class="app-icon">
-					<h1 class="heading">{heading}</h1>
-					<h2 class="subheading subheading-mobile" style="white-space: pre-line;">{subheadingMobile}</h2>
-					<h2 class="subheading subheading-desktop" style="white-space: pre-line;">{subheadingComplete}</h2>
+					<img src={appIcon} class="app-icon animate-on-load">
+					<h1 class="heading animate-on-load-delay-1">{heading}</h1>
+					<h2 class="subheading subheading-mobile animate-on-load-delay-2" style="white-space: pre-line;">{subheadingMobile}</h2>
+					<h2 class="subheading subheading-desktop animate-on-load-delay-2" style="white-space: pre-line;">{subheadingComplete}</h2>
 					<div class="badge-container">
 						{badges.map(badge => (
 							<div>
@@ -81,9 +85,47 @@ const screenshots = [
 					))}
 				</div>
 			</main>
-			<footer>
+
+      <section class="feature-section cream fade-in-up">
+        <div class="feature-content">
+          <div class="feature-text">
+            <h2 class="feature-title">Conectando Comunidades</h2>
+            <p class="feature-description">
+              VeciApp facilita la comercialización y el acceso a la oferta de bienes y servicios de emprendedores vinculados al programa de buenos vecinos. Promovemos la integración y estabilización socioeconómica de poblaciones vulnerables, conectándolas con su entorno más cercano en Santa Marta.
+            </p>
+          </div>
+          <div class="feature-image">
+            <img src="/images/7.jpeg" alt="VeciApp Community Features" />
+          </div>
+        </div>
+      </section>
+
+      <section class="feature-section green fade-in-up">
+        <div class="feature-content">
+          <div class="feature-image">
+            <img src="/images/8.jpeg" alt="VeciApp Integration Features" />
+          </div>
+          <div class="feature-text">
+            <h2 class="feature-title">Más que una App, una Comunidad</h2>
+            <p class="feature-description">
+              En el corazón de la costa Caribe, "veci" representa a quienes ofrecen servicios y ayudan a otros. VeciApp nace del programa "Buenos Vecinos" de la Fundación Maleua, construyendo puentes entre migrantes venezolanos y comunidades locales, fomentando la integración y el desarrollo económico conjunto.
+            </p>
+            <div class="badge-container">
+              {badges.map(badge => (
+                <div>
+                  <a href={badge.link} target="_blank">
+                    <img src={badge.image} class="badge" />
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
 				
-			</footer>
+		<Footer />
 		</div>
 	</body>
 </html>
@@ -101,5 +143,28 @@ const screenshots = [
 		}, 1400);
 	}
 
-	document.addEventListener('DOMContentLoaded', rotateScreenshots);
+	// New scroll animation code
+	function handleScrollAnimations() {
+		const elements = document.querySelectorAll('.fade-in-up');
+		
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('visible');
+				}
+			});
+		}, {
+			threshold: 0.1,
+			rootMargin: '0px 0px -50px 0px'
+		});
+	
+		elements.forEach(element => {
+			observer.observe(element);
+		});
+	}
+
+	document.addEventListener('DOMContentLoaded', () => {
+		rotateScreenshots();
+		handleScrollAnimations();
+	});
 </script>
