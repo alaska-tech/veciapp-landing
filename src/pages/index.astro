@@ -1,5 +1,6 @@
 ---
 import '../styles/main.css'
+import '../styles/animations.css'
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 
@@ -52,10 +53,10 @@ const screenshots = [
 		<div class="container">
 			<main>
 				<div class="text-container">
-					<img src={appIcon} class="app-icon">
-					<h1 class="heading">{heading}</h1>
-					<h2 class="subheading subheading-mobile" style="white-space: pre-line;">{subheadingMobile}</h2>
-					<h2 class="subheading subheading-desktop" style="white-space: pre-line;">{subheadingComplete}</h2>
+					<img src={appIcon} class="app-icon animate-on-load">
+					<h1 class="heading animate-on-load-delay-1">{heading}</h1>
+					<h2 class="subheading subheading-mobile animate-on-load-delay-2" style="white-space: pre-line;">{subheadingMobile}</h2>
+					<h2 class="subheading subheading-desktop animate-on-load-delay-2" style="white-space: pre-line;">{subheadingComplete}</h2>
 					<div class="badge-container">
 						{badges.map(badge => (
 							<div>
@@ -85,7 +86,7 @@ const screenshots = [
 				</div>
 			</main>
 
-      <section class="feature-section cream">
+      <section class="feature-section cream fade-in-up">
         <div class="feature-content">
           <div class="feature-text">
             <h2 class="feature-title">Conectando Comunidades</h2>
@@ -99,7 +100,7 @@ const screenshots = [
         </div>
       </section>
 
-      <section class="feature-section green">
+      <section class="feature-section green fade-in-up">
         <div class="feature-content">
           <div class="feature-image">
             <img src="/images/8.jpeg" alt="VeciApp Integration Features" />
@@ -142,5 +143,28 @@ const screenshots = [
 		}, 1400);
 	}
 
-	document.addEventListener('DOMContentLoaded', rotateScreenshots);
+	// New scroll animation code
+	function handleScrollAnimations() {
+		const elements = document.querySelectorAll('.fade-in-up');
+		
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('visible');
+				}
+			});
+		}, {
+			threshold: 0.1,
+			rootMargin: '0px 0px -50px 0px'
+		});
+	
+		elements.forEach(element => {
+			observer.observe(element);
+		});
+	}
+
+	document.addEventListener('DOMContentLoaded', () => {
+		rotateScreenshots();
+		handleScrollAnimations();
+	});
 </script>
